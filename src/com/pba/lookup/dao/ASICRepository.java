@@ -1,3 +1,6 @@
+/**
+ * ASIC Repositroy class
+ */
 package com.pba.lookup.dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;

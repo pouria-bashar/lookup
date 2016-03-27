@@ -24,9 +24,5 @@ public class ASICDocument {
 		return id;
 	}
 
-	@Override
-	public String toString() {
-		return "ASICDocument [id=" + id + ", companyName=" + companyName + "]";
-	}
 	
 }

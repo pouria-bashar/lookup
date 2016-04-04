@@ -27,13 +27,13 @@ public class CompanySearch extends RestBase {
 	private LookupService lookupService;
 
 	@RequestMapping(value = "ASIC/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String searchByName(@RequestParam("name") String name) {
+	public String searchByName(@RequestParam("name") String name,
+			@RequestParam(required = false, name = "limit") Integer limit) {
 		try {
 
-			
-			List<ASICDocument> documents = lookupService.searchByName(name);
+			List<ASICDocument> documents = lookupService.searchByName(name, limit);
 			ObjectMapper mapper = new ObjectMapper();
-			
+
 			String json = mapper.writeValueAsString(documents);
 			return json;
 		} catch (NotFoundException nf) {
@@ -46,14 +46,14 @@ public class CompanySearch extends RestBase {
 		}
 
 	}
+
 	@RequestMapping(value = "ASIC/validate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String validateABN(@RequestParam("abn") String abn) {
 		try {
 
-			
 			ASICDocument documents = lookupService.validateByABN(abn);
 			ObjectMapper mapper = new ObjectMapper();
-			
+
 			String json = mapper.writeValueAsString(documents);
 			return json;
 		} catch (NotFoundException nf) {

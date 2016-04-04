@@ -3,8 +3,6 @@ package com.pba.lookup.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.pba.lookup.dao.ASICRepository;
@@ -15,32 +13,30 @@ import com.pba.lookup.exceptions.NotFoundException;
 public class LookupService {
 	@Autowired
 	private ASICRepository asicRepository;
+	private final int MAX_NUMBER_OF_RECORDS = 20;
 
 	/**
-	 * Returns company details for a company name
+	 * Perform search on the company name
 	 * 
-	 * @param companyName
-	 *            the company name
-	 * @return The ASIC details for a company
+	 * @param name the name of the compnay to search
+	 * @param limit maximum number of records to return
+	 * @return List of ASICDocuments matching the search criteria
+	 * @throws NotFoundException
+	 *             if no records are found
 	 */
-	public List<ASICDocument> searchByName(String name) throws NotFoundException {
-	
-
-		Query query = new Query();
-		query.limit(10);		
-		query.addCriteria(Criteria.where("name").regex(name));
-		query.limit(10);
-
-		return asicRepository.searchByName(query, name);
-
+	public List<ASICDocument> searchByName(String name, int limit) throws NotFoundException {
+		return asicRepository.searchByName(name, limit > MAX_NUMBER_OF_RECORDS ? MAX_NUMBER_OF_RECORDS : limit);
 	}
-	public ASICDocument validateByABN(String abn) throws NotFoundException{
-		Query query = new Query();
-		query.addCriteria(Criteria.where("abn").is(abn));
 
-		return asicRepository.validateABN(query, abn);
-
+	/**
+	 * Performs ABN validation
+	 * 
+	 * @param abn the abn to validate
+	 * @return ASIC document matching the abn
+	 * @throws NotFoundException if there are no records matching the search criteria
+	 */
+	public ASICDocument validateByABN(String abn) throws NotFoundException {
+		return asicRepository.validateABN(abn);
 	}
-	
 
 }

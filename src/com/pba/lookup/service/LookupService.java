@@ -34,5 +34,13 @@ public class LookupService {
 		return asicRepository.searchByName(query, name);
 
 	}
+	public ASICDocument validateByABN(String abn) throws NotFoundException{
+		Query query = new Query();
+		query.addCriteria(Criteria.where("abn").is(abn));
+
+		return asicRepository.validateABN(query, abn);
+
+	}
+	
 
 }

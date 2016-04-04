@@ -25,5 +25,9 @@ public class ASICRepository {
 		return mongoTemplate.find(query, ASICDocument.class);
 	}
 	
+	public ASICDocument validateABN(Query query , String avbn){
+		return mongoTemplate.findOne(query, ASICDocument.class);
+	}
+	
 
 }

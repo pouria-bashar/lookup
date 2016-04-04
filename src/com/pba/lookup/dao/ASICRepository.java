@@ -1,17 +1,29 @@
 /**
- * ASIC Repositroy class
+ * 
  */
 package com.pba.lookup.dao;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.pba.lookup.entities.ASICDocument;
 
 @Repository
-public interface ASICRepository extends MongoRepository<ASICDocument, String> {
-	   
-	   ASICDocument findByCompanyName(String companyName);
-	   
-	   
+public class ASICRepository {
+
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
+	
+	
+	
+	public List<ASICDocument> searchByName(Query query , String name){
+		return mongoTemplate.find(query, ASICDocument.class);
 	}
+	
+
+}

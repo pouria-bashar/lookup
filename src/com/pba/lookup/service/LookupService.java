@@ -1,7 +1,12 @@
 package com.pba.lookup.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
 import com.pba.lookup.dao.ASICRepository;
 import com.pba.lookup.entities.ASICDocument;
 import com.pba.lookup.exceptions.NotFoundException;
@@ -18,12 +23,16 @@ public class LookupService {
 	 *            the company name
 	 * @return The ASIC details for a company
 	 */
-	public ASICDocument getCompanyByName(String companyName) throws NotFoundException{
-		ASICDocument result = asicRepository.findByCompanyName(companyName);
-		if(result == null){
-			throw new NotFoundException("Could not find any records for \"" + companyName + " \"");
-		}
-		return result;
+	public List<ASICDocument> searchByName(String name) throws NotFoundException {
+	
+
+		Query query = new Query();
+		query.limit(10);		
+		query.addCriteria(Criteria.where("name").regex(name));
+		query.limit(10);
+
+		return asicRepository.searchByName(query, name);
+
 	}
 
 }
